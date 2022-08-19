@@ -1,0 +1,120 @@
+<!DOCTYPE html>
+<html lang="cn">
+
+<head>
+    <meta charset="UTF-8">
+    <title>唯蟹工具</title>
+        <link rel="icon" href="https://www.wxies.cn/favicon.ico">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1" />
+    <meta name="description" content="Description">
+    <meta name="viewport"
+        content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+
+    <!-- Styles -->
+    <link rel="stylesheet" href="css/vue.css" />
+    <link rel="stylesheet" href="css/style.min.css" />
+    <style>
+        /* 字体大小 */
+        h1 {
+            font-size: 28px !important;
+        }
+
+        h2 {
+            font-size: 24px !important;
+        }
+
+        h3 {
+            font-size: 20px !important;
+        }
+
+        h4 {
+            font-size: 18px !important;
+        }
+
+        h5 {
+            font-size: 16px !important;
+        }
+
+        h6 {
+            font-size: 14px !important;
+        }
+
+        /* 代码滑块 */
+        pre::-webkit-scrollbar {
+            width: 8px;
+            height: 8px;
+        }
+
+        pre::-webkit-scrollbar-thumb {
+            border-radius: 4px;
+            background-color: #cbcbcb;
+        }
+
+        pre::-webkit-scrollbar-thumb:hover {
+            background-color: #bbb;
+        }
+
+        code::-webkit-scrollbar {
+            width: 8px;
+            height: 8px;
+        }
+
+        code::-webkit-scrollbar-thumb {
+            border-radius: 6px;
+            background-color: #cbcbcb
+        }
+
+        code::-webkit-scrollbar-thumb:hover {
+            background-color: #bbb
+        }
+    </style>
+</head>
+
+<body>
+    <div id="app">加载中...</div>
+    <script>
+        window.$docsify = {
+            name: '唯蟹工具',
+            loadSidebar: true,
+            subMaxLevel: 3,
+            auto2top: true,
+            routerMode: 'history',
+            topMargin: 40,
+            notFoundPage: true,
+            homepage: 'homo.md',
+            search: {
+                maxAge: 86400000, // 过期时间，单位毫秒，默认一天
+                paths: 'auto',
+                placeholder: '搜索...',
+                noData: '未找到结果，请换一个关键词重试',
+                depth: 6,
+            },
+            darklightTheme: {
+                siteFont: 'Source Sans Pro,Helvetica Neue,Helvetica,Arial,PingFang SC,Hiragino Sans GB,Heiti SC,Microsoft Yahei,STHeiti',
+                defaultTheme: 'light | dark',
+            }
+        };
+    </script>
+
+    <!-- Docsify -->
+    <script src="js/docsify.min.js"></script>
+
+    <!-- Plugin -->
+    <script src="js/search.min.js"></script>
+    <script src="js/emoji.min.js"></script>
+    <script src="js/external-script.min.js"></script>
+    <script src="js/zoom-image.min.js"></script>
+    <script src="js/index.min.js"></script>
+    <script src="js/docsify-copy-code.min.js"></script>
+
+    <!-- Code Highlight -->
+    <script src="js/prism-nginx.min.js"></script>
+    <script src="js/prism-yaml.min.js"></script>
+    <script src="js/prism-json.min.js"></script>
+    <script src="js/prism-ini.min.js"></script>
+    <script src="js/prism-powershell.min.js"></script>
+    <script src="js/prism-bash.min.js"></script>
+    <script src="js/prism-properties.min.js"></script>
+</body>
+
+</html>
