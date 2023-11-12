@@ -10,26 +10,19 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
-    - name: Checkout Repository
+    - name: 检出仓库
       uses: actions/checkout@v2
 
-    - name: Setup Node.js
+    - name: 设置 Node.js
       uses: actions/setup-node@v3
       with:
         node-version: '14'
 
-    - name: Install Dependencies
+    - name: 安装依赖
       run: npm install
 
-    - name: Build Vitepress
+    - name: 构建 Vitepress
       run: npm run build
-
-    - name: Add Build Output to Git
-      run: |
-        git config --global user.email "actions@github.com"
-        git config --global user.name "GitHub Actions"
-        git add -A
-        git commit -m "Build output from GitHub Actions"
 
   deploy:
     runs-on: ubuntu-latest
@@ -37,13 +30,13 @@ jobs:
     needs: build
 
     steps:
-    - name: Configure SSH Key
+    - name: 配置 SSH 密钥
       uses: webfactory/ssh-agent@v0.5.2
       with:
         ssh-private-key: ${{ secrets.WXIES114514 }}
 
-    - name: Deploy to Server
-      run: |
-        ssh -o StrictHostKeyChecking=no root@43.153.178.35 'cd /www/wwwroot/doc.wxies.cn && git checkout .'
-        ssh -o StrictHostKeyChecking=no root@43.153.178.35 'cd /www/wwwroot/doc.wxies.cn && git pull origin main'
-        ssh -o StrictHostKeyChecking=no root@43.153.178.35 'cd /www/wwwroot/doc.wxies.cn && git add . && git commit -m "Auto deploy" && git push origin main'
+    - name: 删除服务器上的旧文件
+      run: ssh -o StrictHostKeyChecking=no root@43.153.178.35 'cd /www/wwwroot/doc.wxies.cn && rm -rf *'
+
+    - name: 将构建输出推送到服务器
+      run: scp -o StrictHostKeyChecking=no -r dist/* root@43.153.178.35:/www/wwwroot/doc.wxies.cn/
