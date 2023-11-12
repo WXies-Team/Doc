@@ -16,13 +16,20 @@ jobs:
     - name: Setup Node.js
       uses: actions/setup-node@v3
       with:
-        node-version: '20'
+        node-version: '14'
 
     - name: Install Dependencies
       run: npm install
 
     - name: Build Vitepress
       run: npm run build
+
+    - name: Add Build Output to Git
+      run: |
+        git config --global user.email "actions@github.com"
+        git config --global user.name "GitHub Actions"
+        git add -A
+        git commit -m "Build output from GitHub Actions"
 
   deploy:
     runs-on: ubuntu-latest
@@ -33,12 +40,10 @@ jobs:
     - name: Configure SSH Key
       uses: webfactory/ssh-agent@v0.5.2
       with:
-        ssh-private-key: ${{ secrets['WXIES114514'] }}
+        ssh-private-key: ${{ secrets.WXIES114514 }}
 
     - name: Deploy to Server
       run: |
         ssh -o StrictHostKeyChecking=no root@43.153.178.35 'cd /www/wwwroot/doc.wxies.cn && git checkout .'
         ssh -o StrictHostKeyChecking=no root@43.153.178.35 'cd /www/wwwroot/doc.wxies.cn && git pull origin main'
         ssh -o StrictHostKeyChecking=no root@43.153.178.35 'cd /www/wwwroot/doc.wxies.cn && git add . && git commit -m "Auto deploy" && git push origin main'
-
-    # 这里可以添加其他服务器部署后的操作
