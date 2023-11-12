@@ -39,4 +39,4 @@ jobs:
       run: ssh -o StrictHostKeyChecking=no root@43.153.178.35 'cd /www/wwwroot/doc.wxies.cn && rm -rf *'
 
     - name: 将构建输出推送到服务器
-      run: scp -o StrictHostKeyChecking=no -r docs/dist/* root@43.153.178.35:/www/wwwroot/doc.wxies.cn/
+      run: scp -o StrictHostKeyChecking=no -r "docs/dist/*" root@43.153.178.35:/www/wwwroot/doc.wxies.cn/
