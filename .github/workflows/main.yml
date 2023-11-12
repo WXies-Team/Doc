@@ -36,7 +36,7 @@ jobs:
         ssh-private-key: ${{ secrets.WXIES114514 }}
 
     - name: 删除服务器上的旧文件
-      run: ssh -o StrictHostKeyChecking=no root@43.153.178.35 'cd /www/wwwroot/doc.wxies.cn && rm -rf *'
+      run: ssh -o StrictHostKeyChecking=no root@43.153.178.35 'cd /www/wwwroot/doc.wxies.cn && rm -rf ./*'
 
     - name: 进入目录
       run: ssh -o StrictHostKeyChecking=no root@43.153.178.35 'cd /www/wwwroot/doc.wxies.cn'
