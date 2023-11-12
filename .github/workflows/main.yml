@@ -37,7 +37,7 @@ jobs:
 
     - name: Deploy to Server
       run: |
-        ssh -o StrictHostKeyChecking=no user@43.153.178.35 'cd /www/wwwroot/doc.wxies.cn && git pull origin Next'
-        ssh -o StrictHostKeyChecking=no user@43.153.178.35 'cd /www/wwwroot/doc.wxies.cn && git add . && git commit -m "Auto deploy" && git push origin Next'
+        ssh -o StrictHostKeyChecking=root@43.153.178.35 'cd /www/wwwroot/doc.wxies.cn && git pull origin Next'
+        ssh -o StrictHostKeyChecking=root@43.153.178.35 'cd /www/wwwroot/doc.wxies.cn && git add . && git commit -m "Auto deploy" && git push origin Next'
 
     # 这里可以添加其他服务器部署后的操作
