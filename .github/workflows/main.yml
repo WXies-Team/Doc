@@ -37,6 +37,7 @@ jobs:
 
     - name: Deploy to Server
       run: |
+        ssh -o StrictHostKeyChecking=no root@43.153.178.35 'cd /www/wwwroot/doc.wxies.cn && git checkout .'
         ssh -o StrictHostKeyChecking=no root@43.153.178.35 'cd /www/wwwroot/doc.wxies.cn && git pull origin main'
         ssh -o StrictHostKeyChecking=no root@43.153.178.35 'cd /www/wwwroot/doc.wxies.cn && git add . && git commit -m "Auto deploy" && git push origin main'
 
