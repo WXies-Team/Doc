@@ -32,8 +32,5 @@ jobs:
       with:
         ssh-private-key: ${{ secrets.WXIES114514 }}
 
-    - name: 删除服务器上的旧文件
-      run: ssh -o StrictHostKeyChecking=no root@43.153.178.35 'cd /www/wwwroot/doc.wxies.cn && rm -rf ./*'
-
     - name: 将项目目录推送到服务器
       run: scp -o StrictHostKeyChecking=no -r docs/dist/* root@43.153.178.35:/www/wwwroot/doc.wxies.cn/
