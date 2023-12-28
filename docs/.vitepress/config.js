@@ -14,7 +14,7 @@ const config = {
     docsRepo: "https://github.com/WXies-Team/Doc",
     docsBranch: "Next",
     editLink: {
-      pattern: 'https://github.com/WXies-Team/Doc/edit/Next/docs/:path',
+      pattern: 'https://github.com/WXies-Team/Doc/edit/main/docs/:path',
       text:"在 GitHub 上编辑此页"
     },
     docsDir: "docs",
