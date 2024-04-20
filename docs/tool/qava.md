@@ -1,7 +1,7 @@
 # 获取 QQ 头像
 
-:::tip 提示
-!> 工具与涉及资源全部来自于互联网，如有侵权内容，请联系hs@horatio.cn
+:::warning 警告
+部分代码来自互联网，如有侵权请前往[GitHub Issues](https://github.com/WXies-Team/Doc/issues)要求删除
 :::
 
 - 接口地址：https://api.wxies.cn/avatar/qq.php
