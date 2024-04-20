@@ -8,19 +8,19 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
-    - name: 检出仓库
+    - name: Checkout code
       uses: actions/checkout@v4
 
-    - name: 设置 Node.js
+    - name: Set up Node.js
       uses: actions/setup-node@v4
       with:
         node-version: '20'
 
-    - name: 安装依赖
+    - name: Install dependence
       run: |
         npm install
         npm audit fix
-        apt-get install rsync
+        sudo apt-get install rsync
 
     - name: Bulid Vitepress
       run: npm run build
