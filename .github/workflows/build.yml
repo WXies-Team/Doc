@@ -20,7 +20,6 @@ jobs:
       run: |
         npm install
         npm audit fix
-        sudo apt-get install rsync
 
     - name: Bulid Vitepress
       run: npm run build
@@ -31,4 +30,4 @@ jobs:
         ssh-private-key: ${{ secrets.WXIES114514 }}
 
     - name: Push to server
-      run: rsync -avz --delete docs/dist/* root@autopull.wxies.cn:/www/wwwroot/doc.wxies.cn/
+      run: rsync -avz --delete -e "ssh -o StrictHostKeyChecking=no" docs/dist/* root@autopull.wxies.cn:/www/wwwroot/doc.wxies.cn/
