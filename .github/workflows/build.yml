@@ -1,10 +1,10 @@
-name: 构建并推送
+name: Build & Push
 
 on:
   workflow_dispatch:
 
 jobs:
-  build-and-deploy:
+  build:
     runs-on: ubuntu-latest
 
     steps:
@@ -17,18 +17,18 @@ jobs:
         node-version: '20'
 
     - name: 安装依赖
-      run: npm install
+      run: |
+        npm install
+        npm audit fix
+        apt-get install rsync
 
-    - name: 运行 npm 审核并修复
-      run: npm audit fix
-
-    - name: 构建 Vitepress
+    - name: Bulid Vitepress
       run: npm run build
 
-    - name: 配置 SSH 密钥
+    - name: Configure SSH keys
       uses: webfactory/ssh-agent@v0.9.0
       with:
         ssh-private-key: ${{ secrets.WXIES114514 }}
 
-    - name: 将项目目录推送到服务器
-      run: scp -o StrictHostKeyChecking=no -r docs/dist/* root@8.210.11.235:/www/wwwroot/doc.wxies.cn/
+    - name: Push to server
+      run: rsync -avz --delete docs/dist/* root@autopull.wxies.cn:/www/wwwroot/doc.wxies.cn/

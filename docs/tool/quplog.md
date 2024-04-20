@@ -23,3 +23,41 @@
 :::tip 提示
 也可直接前往该[网页](https://horatio.cn/quplog.html)生成
 :::
+
+调用链接：
+
+```html
+https://api.wxies.cn/tool/quplog.php?vcode=22961&fcode=240412&log=114514&blink=1919810
+```
+
+显示效果
+
+Windows QQ_NT 9.9.9.22961 &
+MacOS QQ_NT 6.9.32.22961 &
+Linux QQ_NT 3.2.7.22961
+
+官方更新内容：
+114514
+
+下载：
+- Windows:
+[X86](https://dldir1.qq.com/qqfile/qq/QQNT/Windows/QQ_9.9.9_240412_x86_.exe) | [X64](https://dldir1.qq.com/qqfile/qq/QQNT/Windows/QQ_9.9.9_240412_x64_.exe)
+- MacOS:
+[Dmg](https://dldir1.qq.com/qqfile/qq/QQNT/Mac/QQ_6.9.32_240412_.dmg)
+- Linux:
+[DEB_x64](https://dldir1.qq.com/qqfile/qq/QQNT/Linux/QQ_3.2.7_240412_amd64_.deb) | [RPM_x64](https://dldir1.qq.com/qqfile/qq/QQNT/Linux/QQ_3.2.7_240412_x86_64_.rpm) | [Appimage_x64](https://dldir1.qq.com/qqfile/qq/QQNT/Linux/QQ_3.2.7_240412_x86_64_.AppImage)
+[DEB_arm](https://dldir1.qq.com/qqfile/qq/QQNT/Linux/QQ_3.2.7_240412_arm64_.deb) | [RPM_arm](https://dldir1.qq.com/qqfile/qq/QQNT/Linux/QQ_3.2.7_240412_aarch64_.rpm) | [Appimage_arm](https://dldir1.qq.com/qqfile/qq/QQNT/Linux/QQ_3.2.7_240412_arm64_.AppImage)
+[LoongArch](https://dldir1.qq.com/qqfile/qq/QQNT/Linux/QQ_3.2.7_240412_loongarch64_.deb) | [Mips](https://dldir1.qq.com/qqfile/qq/QQNT/Linux/QQ_3.2.7_240412_mips64el_.deb)
+
+备份：
+- Windows:
+[X86](https://t.me/linqiqi_backup/1919810) | [X64](https://t.me/linqiqi_backup/1919811)
+- MacOS:
+[Dmg](https://t.me/linqiqi_backup/1919812)
+- Linux:
+[DEB](https://t.me/linqiqi_backup/1919813) | [RPM](https://t.me/linqiqi_backup/1919814) | [Appimage](https://t.me/linqiqi_backup/1919815) | [LoongArch](https://t.me/linqiqi_backup/1919816) | [Mips](https://t.me/linqiqi_backup/1919817)
+
+TG@ [QQ/TIM For Update Log](https://t.me/qq_updatelog)
+#QQ_NT_Windows
+#QQ_NT_MacOS
+#QQ_NT_Linux
