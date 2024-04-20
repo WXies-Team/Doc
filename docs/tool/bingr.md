@@ -1,6 +1,8 @@
 # 必应每日壁纸
 
-!> 工具与涉及资源全部来自于互联网，如有侵权内容，请联系hs@horatio.cn
+:::warning 警告
+部分代码来自互联网，如有侵权请前往[GitHub Issues](https://github.com/WXies-Team/Doc/issues)要求删除
+:::
 
 - 接口地址：https://api.wxies.cn/rpicgs/bing.php
 - 返回格式：跳转图片链接
@@ -14,7 +16,9 @@
 | size | 指定获取图片大小 | 指定获取图片大小 |
 | info | 获取图片基础信息（json格式） | true, false |
 
-?> 以上所有参数均非必要，默认参数为rand=false，day=0，size=1920×1080，info=false
+:::tip 提示
+以上所有参数均非必要，默认参数为rand=false，day=0，size=1920×1080，info=false
+:::
 
 - 可用分辨率：
 1920×1080
@@ -31,12 +35,16 @@
 320×240
 240×320
 
-?> 中间的x为英文字母x
+:::tip 提示
+中间的x为英文字母x
+:::
 
 - 调用示例：
   - 默认调用：
 
-?> 不带任何参数调用，显示必应当天图片
+:::tip 提示
+不带任何参数调用，显示必应当天图片
+:::
 
 调用链接：
 
@@ -65,7 +73,9 @@ title:Elephant hawk-moth on foxglove flower (© David Chapman/Alamy),url:https:/
 
 - 随机调用：
 
-?> 刷新本页，图片随机显示
+:::tip 提示
+刷新本页，图片随机显示
+:::
 
 调用链接：
 
