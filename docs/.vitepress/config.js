@@ -25,8 +25,7 @@ const config = {
     ],
     sidebar: getGuideSidebar(),
     footer: {
-      message: 'Rendered by VitePress',
-      copyright: 'Copyright © 2019-2024 WXies Team'
+      copyright: 'Copyright © 2021-2024 WXies Team'
     }
   },
 };
