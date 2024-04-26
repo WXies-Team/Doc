@@ -5,7 +5,7 @@ hero:
   name: WXies Team
   text: Documents
   image:
-    src: https://wxies.cn/favicon.ico
+    src: https://www.wxies.cn/images/favicons/favicon.png
     alt: logo
   actions:
     - theme: brand
