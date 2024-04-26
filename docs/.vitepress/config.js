@@ -6,7 +6,7 @@ const config = {
   title:"WXies Docs",
   description: "We Quest On and On",
   head: [
-    ['link', { rel: 'icon', href: 'https://www.wxies.cn/favicon.ico' }]
+    ['link', { rel: 'icon', href: 'https://www.wxies.cn/images/favicons/favicon.png' }]
   ],
   outDir: "dist",
   themeConfig: {
@@ -19,7 +19,7 @@ const config = {
     },
     docsDir: "docs",
     lastUpdated: "最近更新于",
-    logo: "https://www.wxies.cn/favicon.ico",
+    logo: "https://www.wxies.cn/images/favicons/favicon.png",
     nav: [
       { text: "首页", link: "https://www.wxies.cn" },
     ],
