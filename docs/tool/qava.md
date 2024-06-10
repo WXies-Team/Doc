@@ -12,15 +12,16 @@
 | 参数代码 | 参数含义 | 参数值 | 默认值 | 是否必要 |
 | --- | --- | --- | --- | --- |
 | qq | 需要获取头像的 QQ 号 | QQ 号 | - | 是 |
+| spec | 图像大小 | - | 640 | 否 |
 
 - 调用示例：
 
 调用链接：
 
 ```html
-<img src="https://api.wxies.cn/avatar/qq.php?qq=1115058004"/>
+<img src="https://api.wxies.cn/avatar/qq.php?qq=1115058004&spec=300"/>
 ```
 
 显示效果
-<img src="https://api.wxies.cn/avatar/qq.php?qq=1115058004"/>
+<img src="https://api.wxies.cn/avatar/qq.php?qq=1115058004&spec=300"/>
 
