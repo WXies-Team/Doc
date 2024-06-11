@@ -36,8 +36,9 @@ function getGuideSidebar() {
       text: "实用工具",
       items: [
         { text: "获取 QQ 头像", link: "/tool/qava" },
-        { text: "必应每日壁纸", link: "/tool/bingr" },
+        { text: "获取 QQ 群头像", link: "/tool/qgava" },
         { text: "生成 QQ 更新日志", link: "/tool/quplog" },
+        { text: "必应每日壁纸", link: "/tool/bingr" },
       ],
     },
   ]
