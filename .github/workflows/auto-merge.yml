@@ -1,0 +1,21 @@
+name: Auto Merge Dependabot PRs
+
+on:
+  pull_request:
+    types: [opened, synchronize]
+
+jobs:
+  auto-merge:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v2
+
+      - name: Merge PR
+        run: |
+          if [[ "${{ github.actor }}" == "dependabot[bot]" ]]; then
+            git config --global user.name "GitHub Action"
+            git config --global user.email "action@github.com"
+            git merge --no-ff ${{ github.event.pull_request.head.sha }}
+            git push
+          fi
