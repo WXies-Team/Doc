@@ -19,6 +19,7 @@ const config = {
       text: "在 GitHub 上编辑此页"
     },
     docsDir: "docs",
+    lastUpdated: "true",
     lastUpdatedLabel: "最近更新于",
     logo: "https://www.wxies.cn/images/favicons/favicon.png",
     nav: [
