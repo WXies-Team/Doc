@@ -2,7 +2,7 @@
  * @type {import('vitepress').UserConfig}
  */
 const config = {
-  lang: "zh-CN",
+  lang: 'zh-Hans',
   base: "/",
   title: "WXies Docs",
   description: "We Quest On and On",
@@ -19,8 +19,6 @@ const config = {
       text: "在 GitHub 上编辑此页"
     },
     docsDir: "docs",
-    lastUpdated: "true",
-    lastUpdatedLabel: "最近更新于",
     logo: "https://www.wxies.cn/images/favicons/favicon.png",
     nav: [
       { text: "首页", link: "https://www.wxies.cn" },
@@ -31,9 +29,18 @@ const config = {
     },
 
     docFooter: {
-      prev: '上一篇',
-      next: '下一篇'
+      prev: '上一页',
+      next: '下一页'
     },
+
+    lastUpdated: {
+      text: '最后更新于',
+      formatOptions: {
+        dateStyle: 'short',
+        timeStyle: 'medium'
+      }
+    },
+
     darkModeSwitchLabel: '外观',
     returnToTopLabel: '返回顶部',
     sidebarMenuLabel: '菜单',
