@@ -2,8 +2,9 @@
  * @type {import('vitepress').UserConfig}
  */
 const config = {
+  lang: "zh-CN",
   base: "/",
-  title:"WXies Docs",
+  title: "WXies Docs",
   description: "We Quest On and On",
   head: [
     ['link', { rel: 'icon', href: 'https://www.wxies.cn/images/favicons/favicon.png' }]
@@ -12,10 +13,10 @@ const config = {
   themeConfig: {
     repo: "WXies-Team/Homepage",
     docsRepo: "https://github.com/WXies-Team/Doc",
-    docsBranch: "Next",
+    docsBranch: "main",
     editLink: {
       pattern: 'https://github.com/WXies-Team/Doc/edit/main/docs/:path',
-      text:"在 GitHub 上编辑此页"
+      text: "在 GitHub 上编辑此页"
     },
     docsDir: "docs",
     lastUpdated: "最近更新于",
@@ -26,7 +27,15 @@ const config = {
     sidebar: getGuideSidebar(),
     footer: {
       copyright: 'Copyright © 2021-2024 WXies Team'
-    }
+    },
+
+    docFooter: {
+      prev: '上一篇',
+      next: '下一篇'
+    },
+    darkModeSwitchLabel: '外观',
+    returnToTopLabel: '返回顶部',
+    sidebarMenuLabel: '菜单',
   },
 };
 
