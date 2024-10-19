@@ -1,6 +1,8 @@
 # 唯蟹短链API
 
-!> 工具与涉及资源全部来自于互联网，如有侵权内容，请联系hs@horatio.cn
+:::warning 警告
+接口已废弃
+:::
 
 - 接口地址：https://go.443.fyi/api/url
 - 返回格式：json, xml

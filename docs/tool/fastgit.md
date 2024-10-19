@@ -1,6 +1,8 @@
 # Fastgit
 
-!> 工具与涉及资源全部来自于互联网，如有侵权内容，请联系hs@horatio.cn
+:::warning 警告
+接口已废弃
+:::
 
 - 接口地址：https://fastgit.444.fyi
 - 调用示例：
