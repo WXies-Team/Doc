@@ -21,7 +21,7 @@ jobs:
             }
 
       - name: Auto-merge PR
-        uses: actions/merge-me-action@v2
+        uses: peter-evans/auto-merge@v2
         with:
           github-token: ${{ secrets.GITHUB_TOKEN }}
-          merge-method: squash # 你可以用 'merge'、'squash' 或 'rebase'
+          merge-method: squash  # You can use 'merge', 'squash', or 'rebase'
