@@ -3,25 +3,36 @@ name: Auto Merge Dependabot PRs
 on:
   pull_request:
     types:
-      - opened
+      - labeled
+      - unlabeled
       - synchronize
+      - opened
+      - edited
+      - ready_for_review
       - reopened
+      - unlocked
+  pull_request_review:
+    types:
+      - submitted
+  check_suite:
+    types:
+      - completed
+  status: {}
 
 jobs:
-  auto-merge:
+  automerge:
     runs-on: ubuntu-latest
+    permissions:
+      contents: write
+      pull-requests: write
     steps:
-      - name: Check if the PR is from Dependabot
-        uses: actions/github-script@v6
+      - id: automerge
+        name: Auto Merge Dependabot PRs
+        uses: pascalgn/automerge-action@v0.16.4
+        env:
+          GITHUB_TOKEN: "${{ secrets.GITHUB_TOKEN }}"
         with:
-          script: |
-            const prAuthor = context.payload.pull_request.user.login;
-            if (prAuthor !== 'dependabot[bot]' && prAuthor !== 'dependabot') {
-              core.setFailed('PR is not from Dependabot. Exiting...');
-            }
-
-      - name: Auto-merge PR
-        uses: peter-evans/auto-merge@v2
-        with:
-          github-token: ${{ secrets.GITHUB_TOKEN }}
-          merge-method: squash  # You can use 'merge', 'squash', or 'rebase'
+          # 限制合并条件，仅对 Dependabot PRs 生效
+          mergeMethod: squash # 可选: merge, squash, rebase
+          mergeFilterAuthor: "dependabot[bot],dependabot" # 限定作者为 Dependabot
+          mergeFilterBranch: "" # 根据需要可以指定分支过滤
