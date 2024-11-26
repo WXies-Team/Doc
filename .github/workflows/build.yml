@@ -33,4 +33,4 @@ jobs:
         ssh-private-key: ${{ secrets.WXIES114514 }}
 
     - name: Push to server
-      run: rsync -avz --delete -e "ssh -o StrictHostKeyChecking=no" docs/dist/* root@autopull.wxies.cn:/www/wwwroot/doc.wxies.cn/
+      run: rsync -avz --delete -e "ssh -o StrictHostKeyChecking=no" docs/dist/* ${{ secrets.AUTO_PULL_USER }}@${{ secrets.AUTO_PULL_ADDR }}:/www/wwwroot/doc.wxies.cn/
