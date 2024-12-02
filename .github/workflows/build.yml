@@ -30,7 +30,7 @@ jobs:
     - name: Configure SSH keys
       uses: webfactory/ssh-agent@v0.9.0
       with:
-        ssh-private-key: ${{ secrets.WXIES114514 }}
+        ssh-private-key: ${{ secrets.SERVER_PRIVATE_KEY }}
 
     - name: Push to server
       run: rsync -avz --delete -e "ssh -o StrictHostKeyChecking=no" docs/dist/* ${{ secrets.AUTO_PULL_USER }}@${{ secrets.AUTO_PULL_ADDR }}:/www/wwwroot/doc.wxies.cn/
