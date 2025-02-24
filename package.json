@@ -4,7 +4,7 @@
   "main": "index.js",
   "license": "MPL-2.0",
   "devDependencies": {
-    "@types/node": "^22.10.2",
+    "@types/node": "^22.13.5",
     "flexsearch": "^0.7.31",
     "markdown-it": "^13.0.1",
     "ts-node": "^10.9.1",
