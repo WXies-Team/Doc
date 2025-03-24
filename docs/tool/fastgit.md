@@ -1,4 +1,4 @@
-# Fastgit
+# FastGit
 
 :::仅允许在命令行使用:::
 
