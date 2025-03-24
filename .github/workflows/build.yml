@@ -22,7 +22,6 @@ jobs:
     - name: Install dependence
       run: |
         npm install
-        npm audit fix
 
     - name: Bulid Vitepress
       run: npm run build
