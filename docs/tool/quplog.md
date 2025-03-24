@@ -4,7 +4,7 @@
 该工具为TG@ [QQ/TIM For Update Log](https://t.me/qq_updatelog)生成更新日志
 :::
 
-- 接口地址：https://api.wxies.cn/tool/quplogc.php (版本号)
+- 接口地址：https://api.horatio.cn/tool/quplogc.php (版本号)
 - 返回格式：HTML
 - 请求方法：GET
 
@@ -22,7 +22,7 @@
 |      blink       |     备份链接初始数字     |    不输入删除备份段     |   -    |    否    |
 
 :::tip 提示
-也可直接前往该 [网页(版本号)](https://api.wxies.cn/tool/quplogc.html)生成
+也可直接前往该 [网页(版本号)](https://api.horatio.cn/tool/quplogc.html)生成
 :::
 
 调用链接：
