@@ -20,7 +20,7 @@
     "count": "ts-node scripts/count.ts"
   },
   "dependencies": {
-    "vite": "^4.1.1"
+    "vite": "^6.2.3"
   },
   "packageManager": "yarn@1.22.19"
 }
