@@ -25,7 +25,7 @@ const config = {
     ],
     sidebar: getGuideSidebar(),
     footer: {
-      copyright: 'Copyright © 2021-2024 WXies Team'
+      copyright: 'Copyright © 2021-2025 WXies Team'
     },
 
     docFooter: {
