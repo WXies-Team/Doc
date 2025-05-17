@@ -56,7 +56,7 @@
 调用链接：
 
 ```html
-https://api.wxies.cn/rpicgs/bing.php?info=true
+https://api.horatio.cn/rpicgs/bing.php?info=true
 ```
 
 返回值：
@@ -76,9 +76,9 @@ title:Elephant hawk-moth on foxglove flower (© David Chapman/Alamy),url:https:/
 调用链接：
 
 ```html
-<img src="https://api.wxies.cn/rpicgs/bing.php?rand=true"/>
+<img src="https://api.horatio.cn/rpicgs/bing.php?rand=true"/>
 ```
 
 显示效果
 
-<img src="https://api.wxies.cn/rpicgs/bing.php?rand=true">
+<img src="https://api.horatio.cn/rpicgs/bing.php?rand=true">
