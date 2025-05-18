@@ -4,7 +4,7 @@
 部分代码来自互联网，如有侵权请前往[GitHub Issues](https://github.com/WXies-Team/Doc/issues)要求删除
 :::
 
-- 接口地址：https://api.horatio.cn/rpicgs/bing.php
+- 接口地址：https://api.horatio.cn/tool/bing.php
 - 返回格式：跳转图片链接
 - 请求方法：GET
 - 调用参数：
@@ -45,18 +45,18 @@
 调用链接：
 
 ```html
-<img src="https://api.horatio.cn/rpicgs/bing.php"/>
+<img src="https://api.horatio.cn/tool/bing.php"/>
 ```
 
 显示效果
-<img src="https://api.horatio.cn/rpicgs/bing.php"/>
+<img src="https://api.horatio.cn/tool/bing.php"/>
 
   - Info调用：
 
 调用链接：
 
 ```html
-https://api.horatio.cn/rpicgs/bing.php?info=true
+https://api.horatio.cn/tool/bing.php?info=true
 ```
 
 返回值：
@@ -76,9 +76,9 @@ title:Elephant hawk-moth on foxglove flower (© David Chapman/Alamy),url:https:/
 调用链接：
 
 ```html
-<img src="https://api.horatio.cn/rpicgs/bing.php?rand=true"/>
+<img src="https://api.horatio.cn/tool/bing.php?rand=true"/>
 ```
 
 显示效果
 
-<img src="https://api.horatio.cn/rpicgs/bing.php?rand=true">
+<img src="https://api.horatio.cn/tool/bing.php?rand=true">
