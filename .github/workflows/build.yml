@@ -32,4 +32,4 @@ jobs:
         ssh-private-key: ${{ secrets.SERVER_PRIVATE_KEY }}
 
     - name: Push to server
-      run: rsync -avz --delete -e "ssh -o StrictHostKeyChecking=no" docs/dist/* ${{ secrets.AUTO_PULL_USER }}@${{ secrets.AUTO_PULL_ADDR }}:/www/wwwroot/doc.horatio.cn/
+      run: rsync -avz --delete -e "ssh -o StrictHostKeyChecking=no" docs/dist/ ${{ secrets.AUTO_PULL_USER }}@${{ secrets.AUTO_PULL_ADDR }}:/www/wwwroot/doc.horatio.cn/
