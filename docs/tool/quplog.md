@@ -4,7 +4,7 @@
 该工具为TG@ [QQ/TIM For Update Log](https://t.me/qq_updatelog)生成更新日志
 :::
 
-- 接口地址：https://api.wxies.cn/tool/quplogc.php (版本号)
+- 接口地址：https://api.wxies.cn/tool/quplog.php
 - 返回格式：HTML
 - 请求方法：GET
 
@@ -22,13 +22,13 @@
 |      blink       |     备份链接初始数字     |    不输入删除备份段     |   -    |    否    |
 
 :::tip 提示
-也可直接前往该 [网页(版本号)](https://api.wxies.cn/tool/quplogc.html)生成
+也可直接前往该 [网页](https://api.wxies.cn/tool/quplog.html)生成
 :::
 
 调用链接：
 
 ```html
-https://api.wxies.cn/tool/quplogc.php?link_windows_x86=https://dldir1.qq.com/qqfile/qq/QQNT/eb96d600/QQ9.9.16.29927_x86.exe&link_windows_x64=https://dldir1.qq.com/qqfile/qq/QQNT/3e273e30/QQ9.9.16.29927_x64.exe&link_windows_arm=https://dldir1.qq.com/qqfile/qq/QQNT/082e7efa/QQ9.9.16.29927_arm64.exe&link_macos=https://dldir1.qq.com/qqfile/qq/QQNT/62a1a49c/QQ_v6.9.61.29927.dmg&link_linux=https://dldir1.qq.com/qqfile/qq/QQNT/833d113c/linuxqq_3.2.13-29927_amd64.deb&blink=114514
+https://api.wxies.cn/tool/quplog.php?link_windows_x86=https://dldir1.qq.com/qqfile/qq/QQNT/eb96d600/QQ9.9.16.29927_x86.exe&link_windows_x64=https://dldir1.qq.com/qqfile/qq/QQNT/3e273e30/QQ9.9.16.29927_x64.exe&link_windows_arm=https://dldir1.qq.com/qqfile/qq/QQNT/082e7efa/QQ9.9.16.29927_arm64.exe&link_macos=https://dldir1.qq.com/qqfile/qq/QQNT/62a1a49c/QQ_v6.9.61.29927.dmg&link_linux=https://dldir1.qq.com/qqfile/qq/QQNT/833d113c/linuxqq_3.2.13-29927_amd64.deb&blink=114514
 ```
 
 显示效果
