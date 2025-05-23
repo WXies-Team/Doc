@@ -57,7 +57,6 @@ function getGuideSidebar() {
         { text: "生成 QQ 更新日志", link: "/tool/quplog" },
         { text: "必应每日壁纸", link: "/tool/bingr" },
         { text: "FastGit", link: "/tool/fastgit" },
-        { text: "获取 IP 地址", link: "/tool/getip" },
       ],
     },
   ]
