@@ -7,12 +7,12 @@
 - 接口地址：https://git.wxies.cn
 - 调用示例：
 
-```git
+```sh
 git clone https://github.com/Icalingua-plus-plus/Icalingua-plus-plus.git
 ```
 
 替换为
 
-```git
+```sh
 git clone https://git.wxies.cn/Icalingua-plus-plus/Icalingua-plus-plus.git
 ```
