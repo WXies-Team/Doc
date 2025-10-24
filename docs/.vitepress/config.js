@@ -59,6 +59,7 @@ function getGuideSidebar() {
       text: '服务加速',
       items: [
         { text: 'GitHub', link: '/tool/github' },
+        { text: 'GitHub', link: '/tool/github' },
         { text: '服务加速', link: '/tool/gravatar' }
       ]
     }
