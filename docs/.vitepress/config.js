@@ -55,13 +55,6 @@ function getGuideSidebar() {
         { text: '必应每日壁纸', link: '/tool/bing' }
       ]
     },
-    {
-      text: '服务加速',
-      items: [
-        { text: 'GitHub', link: '/tool/github' },
-        { text: '服务加速', link: '/tool/gravatar' }
-      ]
-    }
   ]
 }
 
