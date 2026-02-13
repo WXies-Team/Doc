@@ -26,7 +26,7 @@ const config = {
     sidebar: getGuideSidebar(),
     outlineTitle: '本页目录',
     footer: {
-      copyright: 'Copyright © 2021-2025 WXies Team'
+      copyright: 'Copyright © 2021-2026 WXies Team'
     },
     docFooter: {
       prev: '上一页',
