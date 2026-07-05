@@ -9,6 +9,11 @@ export default defineConfig({
     ['link', { rel: 'icon', href: '//wxies.cn/favicon.ico' }]
   ],
   outDir: './dist',
+  vite: {
+    build: {
+      emptyOutDir: false
+    }
+  },
   themeConfig: {
     repo: 'WXies-Team/Homepage',
     docsRepo: 'https://github.com/WXies-Team/Doc',
