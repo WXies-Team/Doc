@@ -149,4 +149,5 @@ dist
 .DS_Store
 .idea
 
-docs/.vitepress/cache
+.vitepress/cache
+.vitepress/dist
