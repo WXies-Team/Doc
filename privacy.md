@@ -8,9 +8,13 @@
 
 ## 二、个人信息处理者信息
 
-- **处理者**：屑涵
-- **所属团队**：唯蟹 Team
-- **联系邮箱**：[hs@horatio.cn](mailto:hs@horatio.cn)
+唯蟹 Team - 屑涵（Horatio）是以下网站个人信息的处理者：
+
+- wxies.cn
+- horatio.cn
+- tio.fyi
+
+**联系邮箱**：[hs@horatio.cn](mailto:hs@horatio.cn)
 
 ## 三、我们收集的个人信息
 
