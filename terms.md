@@ -1,9 +1,3 @@
----
-layout: page
-sidebar: false
-aside: false
----
-
 # 用户协议
 
 **生效日期：** 2026年9月30日

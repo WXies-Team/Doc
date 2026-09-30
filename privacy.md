@@ -1,9 +1,3 @@
----
-layout: page
-sidebar: false
-aside: false
----
-
 # 隐私政策
 
 **生效日期：** 2025年6月16日（2026年9月30日修订）
