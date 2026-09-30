@@ -31,6 +31,7 @@ export default defineConfig({
       {
         text: '文档',
         items: [
+          { text: '用户协议', link: '/terms' },
           { text: '隐私政策', link: '/privacy' }
         ]
       },
