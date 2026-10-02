@@ -41,7 +41,8 @@ export default defineConfig({
           { text: '工具概览', link: '/tool/' },
           { text: '获取 QQ 头像', link: '/tool/qava' },
           { text: '获取 QQ 群头像', link: '/tool/qgava' },
-          { text: '必应每日壁纸', link: '/tool/bing' }
+          { text: '必应每日壁纸', link: '/tool/bing' },
+          { text: '短链服务', link: '/tool/shortener' }
         ]
       }
     ],

@@ -13,6 +13,7 @@ WXies Team 提供的各种实用工具 API 文档。
 | [获取 QQ 头像](/tool/qava) | 通过 QQ 号获取用户头像 | `https://api.horatio.cn/avatar/qq.php` |
 | [获取 QQ 群头像](/tool/qgava) | 通过 QQ 群号获取群头像 | `https://api.horatio.cn/avatar/qqg.php` |
 | [必应每日壁纸](/tool/bing) | 获取必应每日壁纸图片 | `https://api.horatio.cn/tool/bing.php` |
+| [短链服务](/tool/shortener) | 创建、查询与管理短链，支持自定义代码、过期与覆盖 | `https://tio.fyi/api.php` |
 
 ## 使用说明
 
