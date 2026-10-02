@@ -23,15 +23,23 @@ jobs:
     steps:
       - uses: actions/checkout@v7
 
-      # 构建指令沿用原 deploy.sh
+      # 构建指令沿用原 deploy.sh（VitePress outDir 配置为 ./dist）
       - name: Install dependencies
         run: npm install
 
       - name: Build
         run: npm run build
 
-      # 增量更新：不带 --delete，服务器上多出的文件保留
-      # .git / node_modules 被 exclude，不上传
+      - name: Verify build output
+        run: |
+          if [ ! -f dist/index.html ]; then
+            echo "::error::dist/index.html 不存在，构建产物路径异常（检查 vitepress outDir）"
+            exit 1
+          fi
+
+      # 构建产物直接铺到站点根目录（不带 dist/ 子目录）
+      # 增量更新：不带 --delete，服务器上多出的文件保留；
+      # 仅单独清掉 git 专用文件（.git/.github/.gitignore/.gitattributes/HANDOFF.md/.gitkeep）
       - name: Deploy
         env:
           SSH_KEY: ${{ secrets.SERVER_SSH_KEY }}
@@ -46,7 +54,7 @@ jobs:
           chmod 600 "$KEY"
           trap 'rm -f "$KEY"' EXIT
           SSH_OPTS=(-i "$KEY" -o StrictHostKeyChecking=accept-new -o UserKnownHostsFile="$KNOWN" -o BatchMode=yes)
-          ssh "${SSH_OPTS[@]}" "$USER@$HOST" "mkdir -p '$DIR'"
-          rsync -a --exclude='.git' --exclude='node_modules' \
+          ssh "${SSH_OPTS[@]}" "$USER@$HOST" "mkdir -p '$DIR' && rm -rf '$DIR/.git' '$DIR/.github' '$DIR/.gitignore' '$DIR/.gitattributes' '$DIR/HANDOFF.md' && find '$DIR' -name .gitkeep -delete"
+          rsync -a --exclude='.gitkeep' \
             -e "ssh ${SSH_OPTS[*]}" \
-            "$GITHUB_WORKSPACE/" "$USER@$HOST:$DIR/"
+            "$GITHUB_WORKSPACE/dist/" "$USER@$HOST:$DIR/"
