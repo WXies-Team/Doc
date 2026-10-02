@@ -38,8 +38,10 @@ jobs:
           fi
 
       # 构建产物直接铺到站点根目录（不带 dist/ 子目录）
-      # 增量更新：不带 --delete，服务器上多出的文件保留；
-      # 仅单独清掉 git 专用文件（.git/.github/.gitignore/.gitattributes/HANDOFF.md/.gitkeep）
+      # 镜像同步三条语义：源里删了服务器才删（--delete）、内容没变的完全不碰
+      # （--checksum 按内容比对，绕过"每次构建 mtime 全变新"导致的全量重写，
+      #   未编辑文档的 Last-Modified 保持不变）、内容变了才覆盖
+      # .user.ini/.well-known 为面板托管保留；git 专用文件另由上面 ssh 清理
       - name: Deploy
         env:
           SSH_KEY: ${{ secrets.SERVER_SSH_KEY }}
@@ -55,6 +57,6 @@ jobs:
           trap 'rm -f "$KEY"' EXIT
           SSH_OPTS=(-i "$KEY" -o StrictHostKeyChecking=accept-new -o UserKnownHostsFile="$KNOWN" -o BatchMode=yes)
           ssh "${SSH_OPTS[@]}" "$USER@$HOST" "mkdir -p '$DIR' && rm -rf '$DIR/.git' '$DIR/.github' '$DIR/.gitignore' '$DIR/.gitattributes' '$DIR/HANDOFF.md' && find '$DIR' -name .gitkeep -delete"
-          rsync -a --exclude='.gitkeep' \
+          rsync -a -c --delete --exclude='.user.ini' --exclude='.well-known' --exclude='.gitkeep' \
             -e "ssh ${SSH_OPTS[*]}" \
             "$GITHUB_WORKSPACE/dist/" "$USER@$HOST:$DIR/"
