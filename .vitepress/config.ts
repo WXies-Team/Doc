@@ -68,8 +68,5 @@ export default defineConfig({
     darkModeSwitchLabel: '外观',
     returnToTopLabel: '返回顶部',
     sidebarMenuLabel: '菜单',
-    search: {
-      provider: 'local'
-    }
   }
 })
