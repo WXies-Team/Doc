@@ -20,6 +20,6 @@
     "count": "ts-node scripts/count.ts"
   },
   "dependencies": {
-    "vite": "^8.3.1"
+    "vite": "^8.3.2"
   }
 }
