@@ -1,0 +1,52 @@
+name: deploy
+
+# push main 自动部署（增量更新）。全站内容就是 .md，paths 只能忽略 .github/**，
+# 忽略 md 会把正常文档更新也挡掉；workflow_dispatch 为手动强制部署入口
+on:
+  push:
+    branches: [main]
+    paths-ignore:
+      - '.github/**'
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+# 同分支并发只保留最后一次（对应旧 deploy.sh 锁文件的防重入）
+concurrency:
+  group: deploy-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  deploy:
+    runs-on: self-hosted
+    steps:
+      - uses: actions/checkout@v7
+
+      # 构建指令沿用原 deploy.sh
+      - name: Install dependencies
+        run: npm install
+
+      - name: Build
+        run: npm run build
+
+      # 增量更新：不带 --delete，服务器上多出的文件保留
+      # .git / node_modules 被 exclude，不上传
+      - name: Deploy
+        env:
+          SSH_KEY: ${{ secrets.SERVER_SSH_KEY }}
+          HOST: ${{ secrets.SERVER_HOST }}
+          USER: ${{ secrets.SERVER_USER }}
+          DIR: ${{ secrets.SERVER_DOC_DIR }}
+        run: |
+          set -euo pipefail
+          KEY="$RUNNER_TEMP/deploy_key"
+          KNOWN="$RUNNER_TEMP/known_hosts"
+          printf '%s\n' "$SSH_KEY" > "$KEY"
+          chmod 600 "$KEY"
+          trap 'rm -f "$KEY"' EXIT
+          SSH_OPTS=(-i "$KEY" -o StrictHostKeyChecking=accept-new -o UserKnownHostsFile="$KNOWN" -o BatchMode=yes)
+          ssh "${SSH_OPTS[@]}" "$USER@$HOST" "mkdir -p '$DIR'"
+          rsync -a --exclude='.git' --exclude='node_modules' \
+            -e "ssh ${SSH_OPTS[*]}" \
+            "$GITHUB_WORKSPACE/" "$USER@$HOST:$DIR/"
