@@ -5,7 +5,7 @@
   "main": "index.js",
   "license": "MPL-2.0",
   "devDependencies": {
-    "@types/node": "^26.6.3",
+    "@types/node": "^26.6.4",
     "flexsearch": "^0.8.212",
     "markdown-it": "^15.0.2",
     "ts-node": "^10.9.2",
@@ -20,6 +20,6 @@
     "count": "ts-node scripts/count.ts"
   },
   "dependencies": {
-    "vite": "^8.3.1"
+    "vite": "^8.3.2"
   }
 }
