@@ -14,7 +14,7 @@ outline: deep
 | 请求方法 | POST（推荐，携带 JSON body）或 GET（只读操作） |
 | 返回格式 | JSON（UTF-8） |
 | 鉴权方式 | `Authorization: Bearer <API密钥>` |
-| 调用对象 | 链接（url）类型短链 |
+| 调用对象 | 本人名下短链；创建与编辑仅限**链接（url）类型**，文本/Markdown 只能网页端维护 |
 
 :::tip 一句话速用
 唯一必填参数是 `url`（长链），其余全部可省略——省略 `code` 自动生成、省略 `wechat_allowed` 视为允许微信、省略 `expire_days` 视为永不过期、省略 `max_clicks` 视为无次数上限。
@@ -24,13 +24,18 @@ outline: deep
 
 每个用户拥有唯一 API 密钥，**一把密钥对应一个用户**，仅可操作该用户名下的短链。
 
-**三种携带方式（任选其一）：**
+密钥为 64 位十六进制串（32 字节随机生成），首次访问短链管理页时自动生成。
+
+**四种携带方式（任选其一）：**
 
 | 方式 | 说明 |
 | --- | --- |
 | `Authorization: Bearer <密钥>` | 首选 |
 | `X-API-Key: <密钥>` | 部分 Nginx 配置会丢弃 `Authorization` 头时使用 |
 | `?api_key=<密钥>` | 无法设置请求头的环境（如纯 GET 链接） |
+| JSON body 中的 `api_key` 字段 | 只想用一个 body 携带全部参数时 |
+
+会话登录态优先：浏览器带着登录 Cookie 请求接口时，按登录用户处理，不读密钥。
 
 **获取密钥：**登录 [短链管理](https://tio.fyi/url.php) → 短链列表底部「API 密钥」→ 复制密钥。
 **重置密钥：**同一位置的「重置密钥」按钮（红色）。重置后旧密钥**立即失效**，需重新同步配置。
@@ -55,6 +60,16 @@ outline: deep
 | `overwrite` | int | — | **API: `1` / 网页: `0`** | 短链已存在且属于同一用户时是否覆盖 |
 | `type` | string | — | `url` | **仅支持 `url`**，传 `text`/`markdown` 会报错 |
 
+### 目标链接校验规则
+
+`url` / `url_b64` 解码后的内容需同时满足以下条件，否则返回 `请输入有效的链接地址`：
+
+- 长度 ≤ 4096 字节（`strlen` 按字节计），且不含换行符
+- 带协议头，形如 `scheme://...`：`http`/`https` 之外也允许 `clash://`、`tg://`、`bilibili://`、`weixin://` 等自定义应用协议
+- 禁止 `javascript:`、`vbscript:`、`data:` 等危险伪协议
+- 不能指向 `tio.fyi` 自身（防止短链指向短链造成自环）
+- 中文与复杂查询参数可正常传入；命中 WAF 误拦截时改用 `url_b64`
+
 ### update — 编辑短链
 
 | 参数 | 类型 | 必填 | 说明 |
@@ -75,10 +90,14 @@ outline: deep
 
 | `action` | 方法 | 必填参数 | 说明 |
 | --- | --- | --- | --- |
-| `list` | GET | `search`、`page`（可选） | 分页 20 条/页，仅返回本人短链 |
-| `delete` | POST | `id` | 删除短链 |
-| `update_wechat` | POST | `id`、`wechat_allowed` | 单独切换微信可开状态 |
-| `reset_api_key` | POST | — | 重置密钥；**仅网页登录态可用**，防止密钥被盗后远程轮换锁死账号 |
+| `list` | GET | `search`、`page`（可选） | 分页 20 条/页，仅返回本人短链；按 `code` 或 `url` 模糊匹配，网页端创建的文本/Markdown 短链也会一并返回 |
+| `delete` | POST | `id` | 删除短链，成功返回 `{"success":true,"message":"删除成功"}` |
+| `update_wechat` | POST | `id`、`wechat_allowed` | 单独切换微信可开状态，返回 `{"success":true,"wechat_allowed":0\|1}` |
+| `reset_api_key` | POST | — | 重置密钥并返回新密钥 `{"success":true,"api_key":"..."}`；**仅网页登录态可用**，防止密钥被盗后远程轮换锁死账号 |
+
+:::tip 有效期与次数上限的生效表现
+过期或访问次数达上限的短链，访问时返回 HTTP `410`「链接已过期」，不再跳转。
+:::
 
 ## 覆盖规则
 
@@ -213,6 +232,18 @@ curl -X POST 'https://tio.fyi/api.php?action=update' \
   -H 'Content-Type: application/json' \
   -H 'Authorization: Bearer 你的API密钥' \
   -d '{"id":13,"code":"sale2026","url":"https://example.com/v3","expire_days":0,"max_clicks":""}'
+```
+
+**返回示例：**
+
+```json
+{
+  "success": true,
+  "id": 13,
+  "code": "sale2026",
+  "url": "https://example.com/v3",
+  "short_url": "https://tio.fyi/sale2026"
+}
 ```
 
 ### 删除短链 / 切换微信
