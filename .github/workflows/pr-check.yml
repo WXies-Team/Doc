@@ -1,0 +1,37 @@
+name: pr-check
+
+# PR 轻量检查：能装能构建，Renovate automerge 的依据（renovate.json 检查级规则
+# platformAutomerge: false，等的是本 workflow 的 check run）。deploy.yml 是部署流水线
+#（push main 触发），与本检查互不干扰——这里只构建验证，不 rsync。
+on:
+  pull_request:
+    paths-ignore:
+      - '.github/**'
+      - '*.md'
+      - '**/*.md'
+
+permissions:
+  contents: read
+
+concurrency:
+  group: pr-check-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  check:
+    runs-on: self-hosted
+    steps:
+      - uses: actions/checkout@v7
+
+      - name: Install dependencies
+        run: npm install
+
+      - name: Build
+        run: npm run build
+
+      - name: Verify build output
+        run: |
+          if [ ! -f dist/index.html ]; then
+            echo "::error::dist/index.html 不存在，构建产物路径异常（检查 outDir 配置）"
+            exit 1
+          fi
