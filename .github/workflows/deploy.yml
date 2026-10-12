@@ -21,7 +21,11 @@ jobs:
   deploy:
     runs-on: self-hosted
     steps:
+      # fetch-depth: 0 拉全量历史：VitePress 的「最后更新于」按每个文件跑
+      # git log -1 取时间，默认浅克隆只剩 1 个 commit，全站时间会变成最后一次提交
       - uses: actions/checkout@v7
+        with:
+          fetch-depth: 0
 
       # 构建指令沿用原 deploy.sh（VitePress outDir 配置为 ./dist）
       - name: Install dependencies
