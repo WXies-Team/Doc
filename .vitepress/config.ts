@@ -9,6 +9,8 @@ export default defineConfig({
     ['link', { rel: 'icon', href: '//wxies.cn/favicon.ico' }]
   ],
   outDir: './dist',
+  // AGENTS.md 是仓库指令文件，不产出页面（否则会部署成 doc.horatio.cn/AGENTS.html）
+  srcExclude: ['AGENTS.md'],
   vite: {
     build: {
       emptyOutDir: false
