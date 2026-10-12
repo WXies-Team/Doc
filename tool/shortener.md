@@ -11,14 +11,10 @@ outline: deep
 | 项目 | 说明 |
 | --- | --- |
 | 接口地址 | `https://tio.fyi/api.php` |
-| 请求方法 | POST（推荐，携带 JSON body）或 GET（只读操作） |
-| 返回格式 | JSON（UTF-8） |
-| 鉴权方式 | `Authorization: Bearer <API密钥>` |
+| 请求方法 | `POST`（推荐，携带 JSON body）或 `GET`（只读操作） |
+| 返回格式 | `JSON`（UTF-8） |
+| 鉴权方式 | `Authorization: Bearer <API密钥>`，见下方「鉴权」 |
 | 调用对象 | 本人名下短链；创建与编辑仅限**链接（url）类型**，文本/Markdown 只能网页端维护 |
-
-:::tip 一句话速用
-唯一必填参数是 `url`（长链），其余全部可省略——省略 `code` 自动生成、省略 `wechat_allowed` 视为允许微信、省略 `expire_days` 视为永不过期、省略 `max_clicks` 视为无次数上限。
-:::
 
 ## 鉴权
 
@@ -44,21 +40,25 @@ outline: deep
 密钥等同于你的账号凭据，请勿提交到公开仓库或写在前端代码中。
 :::
 
+:::tip 一句话速用
+唯一必填参数是 `url`（长链），其余全部可省略——省略 `code` 自动生成、省略 `wechat_allowed` 视为允许微信、省略 `expire_days` 视为永不过期、省略 `max_clicks` 视为无次数上限。
+:::
+
 ## 调用参数
 
 ### create — 创建短链
 
 | 参数 | 类型 | 必填 | 默认值 | 说明 |
-| --- | --- | :---: | --- | --- |
-| `action` | string | ✅ | — | 固定 `create` |
-| `url` | string | ✅ | — | 长链（目标地址）。含中文或敏感关键词时建议改用 `url_b64` |
-| `url_b64` | string | — | — | `url` 的 UTF-8 base64，与 `url` 二选一，优先使用 |
-| `code` | string | — | 自动生成 6 位 | 短链代码，`a-zA-Z0-9`，长度 1–32 |
-| `wechat_allowed` | int | — | `1` | `1` 允许微信内打开，`0` 禁止 |
-| `expire_days` | int | — | `0` | 有效天数：`0` 永不过期 |
-| `max_clicks` | int | — | 不限 | 访问次数上限，`0` 或空视为不限 |
-| `overwrite` | int | — | **API: `1` / 网页: `0`** | 短链已存在且属于同一用户时是否覆盖 |
-| `type` | string | — | `url` | **仅支持 `url`**，传 `text`/`markdown` 会报错 |
+| --- | --- | --- | --- | --- |
+| `action` | string | 是 | — | 固定 `create` |
+| `url` | string | 是 | — | 长链（目标地址）。含中文或敏感关键词时建议改用 `url_b64` |
+| `url_b64` | string | 否 | — | `url` 的 UTF-8 base64，与 `url` 二选一，优先使用 |
+| `code` | string | 否 | 自动生成 6 位 | 短链代码，`a-zA-Z0-9`，长度 1–32 |
+| `wechat_allowed` | int | 否 | `1` | `1` 允许微信内打开，`0` 禁止 |
+| `expire_days` | int | 否 | `0` | 有效天数：`0` 永不过期 |
+| `max_clicks` | int | 否 | 不限 | 访问次数上限，`0` 或空视为不限 |
+| `overwrite` | int | 否 | **API: `1` / 网页: `0`** | 短链已存在且属于同一用户时是否覆盖 |
+| `type` | string | 否 | `url` | **仅支持 `url`**，传 `text`/`markdown` 会报错 |
 
 ### 目标链接校验规则
 
@@ -72,15 +72,15 @@ outline: deep
 
 ### update — 编辑短链
 
-| 参数 | 类型 | 必填 | 说明 |
-| --- | --- | :---: | --- |
-| `action` | string | ✅ | 固定 `update` |
-| `id` | int | ✅ | 短链 ID |
-| `code` | string | ✅ | 短链代码 |
-| `url` | string | ✅ | 目标地址（同 `url_b64` 规则） |
-| `wechat_allowed` | int | — | 省略则不改动 |
-| `expire_days` | int | — | **省略 = 保持原过期时间**；`0` = 清除过期 |
-| `max_clicks` | int | — | **省略 = 保持原上限**；空/`0` = 取消上限 |
+| 参数 | 类型 | 必填 | 默认值 | 说明 |
+| --- | --- | --- | --- | --- |
+| `action` | string | 是 | — | 固定 `update` |
+| `id` | int | 是 | — | 短链 ID |
+| `code` | string | 是 | — | 短链代码 |
+| `url` | string | 是 | — | 目标地址（同 `url_b64` 规则） |
+| `wechat_allowed` | int | 否 | 不改动 | 省略则不改动 |
+| `expire_days` | int | 否 | 保持原值 | **省略 = 保持原过期时间**；`0` = 清除过期 |
+| `max_clicks` | int | 否 | 保持原上限 | **省略 = 保持原上限**；空/`0` = 取消上限 |
 
 :::tip 编辑限制
 接口不支持修改 `type`（与网页端一致），如需改为文本/Markdown 请重新创建。
@@ -90,10 +90,10 @@ outline: deep
 
 | `action` | 方法 | 必填参数 | 说明 |
 | --- | --- | --- | --- |
-| `list` | GET | `search`、`page`（可选） | 分页 20 条/页，仅返回本人短链；按 `code` 或 `url` 模糊匹配，网页端创建的文本/Markdown 短链也会一并返回 |
-| `delete` | POST | `id` | 删除短链，成功返回 `{"success":true,"message":"删除成功"}` |
-| `update_wechat` | POST | `id`、`wechat_allowed` | 单独切换微信可开状态，返回 `{"success":true,"wechat_allowed":0\|1}` |
-| `reset_api_key` | POST | — | 重置密钥并返回新密钥 `{"success":true,"api_key":"..."}`；**仅网页登录态可用**，防止密钥被盗后远程轮换锁死账号 |
+| `list` | `GET` | `search`、`page`（可选） | 分页 20 条/页，仅返回本人短链；按 `code` 或 `url` 模糊匹配，网页端创建的文本/Markdown 短链也会一并返回 |
+| `delete` | `POST` | `id` | 删除短链，成功返回 `{"success":true,"message":"删除成功"}` |
+| `update_wechat` | `POST` | `id`、`wechat_allowed` | 单独切换微信可开状态，返回 `{"success":true,"wechat_allowed":0\|1}` |
+| `reset_api_key` | `POST` | — | 重置密钥并返回新密钥 `{"success":true,"api_key":"..."}`；**仅网页登录态可用**，防止密钥被盗后远程轮换锁死账号 |
 
 :::tip 有效期与次数上限的生效表现
 过期或访问次数达上限的短链，访问时返回 HTTP `410`「链接已过期」，不再跳转。
@@ -117,6 +117,8 @@ outline: deep
 ## 调用示例
 
 ### 创建短链（不指定代码）
+
+**请求：**
 
 ```bash
 curl -X POST 'https://tio.fyi/api.php?action=create' \
@@ -144,6 +146,8 @@ curl -X POST 'https://tio.fyi/api.php?action=create' \
 
 ### 指定短链代码 + 完整参数
 
+**请求：**
+
 ```bash
 curl -X POST 'https://tio.fyi/api.php?action=create' \
   -H 'Content-Type: application/json' \
@@ -158,6 +162,8 @@ curl -X POST 'https://tio.fyi/api.php?action=create' \
 ```
 
 ### 使用 url_b64 避免误拦截
+
+**请求：**
 
 ```python
 import base64, json, urllib.request
@@ -177,6 +183,8 @@ print(json.load(urllib.request.urlopen(req)))
 
 ### 覆盖已存在的同名短链
 
+**请求：**
+
 ```bash
 # 第一次：code 已存在且属于你，返回 needs_overwrite
 curl -X POST 'https://tio.fyi/api.php?action=create' \
@@ -195,6 +203,8 @@ curl -X POST 'https://tio.fyi/api.php?action=create' \
 ```
 
 ### 查询短链列表
+
+**请求：**
 
 ```bash
 curl 'https://tio.fyi/api.php?action=list&search=sale&page=1' \
@@ -226,6 +236,8 @@ curl 'https://tio.fyi/api.php?action=list&search=sale&page=1' \
 
 ### 编辑短链
 
+**请求：**
+
 ```bash
 # 传 expire_days=0 清除过期；不传 expire_days 则保持原值
 curl -X POST 'https://tio.fyi/api.php?action=update' \
@@ -248,6 +260,8 @@ curl -X POST 'https://tio.fyi/api.php?action=update' \
 
 ### 删除短链 / 切换微信
 
+**请求：**
+
 ```bash
 curl -X POST 'https://tio.fyi/api.php?action=delete' \
   -H 'Content-Type: application/json' \
@@ -262,28 +276,26 @@ curl -X POST 'https://tio.fyi/api.php?action=update_wechat' \
 
 ## 错误处理
 
-所有响应均含 `success` 字段，失败时附 `message`；覆盖确认场景额外返回 `needs_overwrite`。
+所有响应均含 `success` 字段，失败时附 `message`；覆盖确认场景额外返回 `needs_overwrite`。**业务错误统一返回 HTTP `200` + `"success": false`，以响应体中的 `success` 判断成败。**
 
-| HTTP | message | 说明 |
+| HTTP 状态码 | message | 说明 |
 | --- | --- | --- |
-| 200 | `未授权：请先登录，或提供有效的 API 密钥` | 密钥缺失、错误或过期 |
-| 200 | `API 仅支持链接类型，文本与 Markdown 请在网页端创建` | 通过接口创建非链接类型 |
-| 200 | `API 仅支持链接类型，请在网页端编辑该内容` | 通过接口编辑文本/Markdown 短链 |
-| 200 | `请输入内容` | `url` / `url_b64` 为空 |
-| 200 | `请输入有效的链接地址` | 目标地址不符合链接格式 |
-| 200 | `短链代码只能包含字母和数字，长度 1-32 位` | `code` 格式非法 |
-| 200 | `该短链代码已被其他用户占用` | 短链代码属于他人 |
-| 200 | `该短链代码已存在，是否覆盖原内容？` | 返回 `needs_overwrite:true`，需确认后重发 |
-| 200 | `该短链代码已被占用` | 编辑时改为已被占用的代码 |
-| 200 | `短链不存在` / `无效的ID` | `id` 无权或不存在 |
-| 200 | `该操作需在登录后的网页中执行` | 用密钥调用 `reset_api_key` |
-| 200 | `无效的操作请求` | `action` 不受支持 |
-| 200 | `服务器错误，请稍后再试` | 数据库异常 |
+| `200` | `未授权：请先登录，或提供有效的 API 密钥` | 密钥缺失、错误或过期 |
+| `200` | `API 仅支持链接类型，文本与 Markdown 请在网页端创建` | 通过接口创建非链接类型 |
+| `200` | `API 仅支持链接类型，请在网页端编辑该内容` | 通过接口编辑文本/Markdown 短链 |
+| `200` | `请输入内容` | `url` / `url_b64` 为空 |
+| `200` | `请输入有效的链接地址` | 目标地址不符合链接格式 |
+| `200` | `短链代码只能包含字母和数字，长度 1-32 位` | `code` 格式非法 |
+| `200` | `该短链代码已被其他用户占用` | 短链代码属于他人 |
+| `200` | `该短链代码已存在，是否覆盖原内容？` | 返回 `needs_overwrite:true`，需确认后重发 |
+| `200` | `该短链代码已被占用` | 编辑时改为已被占用的代码 |
+| `200` | `短链不存在` / `无效的ID` | `id` 无权或不存在 |
+| `200` | `该操作需在登录后的网页中执行` | 用密钥调用 `reset_api_key` |
+| `200` | `无效的操作请求` | `action` 不受支持 |
+| `200` | `服务器错误，请稍后再试` | 数据库异常 |
+| `403` | — | 命中站点防火墙（WAF），返回 HTML 拦截页；改用 `url_b64` 或调整目标地址重试 |
+| `410` | — | 短链已过期或访问次数达上限，不再跳转 |
 
-:::tip 状态码说明
-业务错误统一返回 HTTP `200` + `"success": false`，请以响应体中的 `success` 判断成败。
-:::
-
-:::warning 反馈问题
-遇到未列出的错误请前往 [GitHub Issues](https://github.com/WXies-Team/Doc/issues) 提问。
+:::tip 问题反馈
+遇到问题请前往 [GitHub Issues](https://github.com/WXies-Team/Doc/issues) 提问
 :::
