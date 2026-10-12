@@ -1,0 +1,57 @@
+{
+  "$schema": "https://docs.renovatebot.com/renovate-schema.json",
+  "extends": [
+    "config:best-practices"
+  ],
+  "ignorePresets": [
+    "helpers:pinGitHubActionDigests",
+    ":maintainLockFilesWeekly"
+  ],
+  "timezone": "Asia/Shanghai",
+  "schedule": [
+    "before 9am on monday"
+  ],
+  "commitMessage": "chore(deps): 更新依赖",
+  "dependencyDashboard": false,
+  "rebaseWhen": "conflicted",
+  "vulnerabilityAlerts": {
+    "enabled": true,
+    "schedule": []
+  },
+  "packageRules": [
+    {
+      "description": "npm 小幅更新合并一个 PR",
+      "matchManagers": [
+        "npm"
+      ],
+      "matchUpdateTypes": [
+        "minor",
+        "patch",
+        "digest",
+        "pin"
+      ],
+      "groupName": "npm-minor-patch"
+    },
+    {
+      "description": "actions 小幅更新合并一个 PR",
+      "matchManagers": [
+        "github-actions"
+      ],
+      "matchUpdateTypes": [
+        "minor",
+        "patch",
+        "digest",
+        "pin"
+      ],
+      "groupName": "actions-minor-patch"
+    },
+    {
+      "description": "检查级自动合并：pr-check 绿后合并（含 major），见 .github/workflows/pr-check.yml",
+      "matchPackageNames": [
+        "*"
+      ],
+      "automerge": true,
+      "platformAutomerge": false
+    }
+  ]
+}
