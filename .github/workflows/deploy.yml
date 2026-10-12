@@ -61,7 +61,7 @@ jobs:
           chmod 600 "$KEY"
           trap 'rm -f "$KEY"' EXIT
           SSH_OPTS=(-i "$KEY" -o StrictHostKeyChecking=accept-new -o UserKnownHostsFile="$KNOWN" -o BatchMode=yes)
-          ssh "${SSH_OPTS[@]}" "$USER@$HOST" "mkdir -p '$DIR' && rm -rf '$DIR/.git' '$DIR/.github' '$DIR/.gitignore' '$DIR/.gitattributes' '$DIR/HANDOFF.md' && find '$DIR' -name .gitkeep -delete"
-          rsync -a -c --no-times --delete --exclude='.user.ini' --exclude='.well-known' --exclude='.gitkeep' \
+          ssh "${SSH_OPTS[@]}" "$USER@$HOST" "mkdir -p '$DIR' && rm -rf '$DIR/.git' '$DIR/.github' '$DIR/.gitignore' '$DIR/.gitattributes' '$DIR/HANDOFF.md' '$DIR/AGENTS.md' && find '$DIR' -name .gitkeep -delete"
+          rsync -a -c --no-times --delete --exclude='.user.ini' --exclude='.well-known' --exclude='.htaccess' --exclude='.gitkeep' \
             -e "ssh ${SSH_OPTS[*]}" \
             "$GITHUB_WORKSPACE/dist/" "$USER@$HOST:$DIR/"
