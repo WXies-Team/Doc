@@ -1,0 +1,16 @@
+/* 品牌主色与三个 App / auth / 邮件对齐：#3482FF（Miuix 默认蓝）。
+   VitePress 自带的是靛蓝 #3451B2，和产品其余面不是一套。
+   正文/链接色压白要 4.5:1：--vp-c-brand-2 用加深的 #2563EB（同 auth 的 --primary-strong）。 */
+:root {
+  --vp-c-brand-1: #3482ff;
+  --vp-c-brand-2: #2563eb;
+  --vp-c-brand-3: #2563eb;
+  --vp-c-brand-soft: rgba(52, 130, 255, 0.14);
+}
+
+.dark {
+  --vp-c-brand-1: #5c93ff;
+  --vp-c-brand-2: #3482ff;
+  --vp-c-brand-3: #3482ff;
+  --vp-c-brand-soft: rgba(92, 147, 255, 0.16);
+}
