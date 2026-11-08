@@ -1,0 +1,17 @@
+# VCS metadata and repository-only files: never uploaded, never deleted
+.git/*
+.github/*
+.gitignore
+.gitattributes
+.gitmodules
+AGENTS.md
+CLAUDE.md
+HANDOFF.md
+# Panel and server-managed files: never uploaded, never deleted
+.user.ini
+.htaccess
+.well-known/*
+# Tooling and logs
+node_modules/*
+*.log
+.gitkeep
