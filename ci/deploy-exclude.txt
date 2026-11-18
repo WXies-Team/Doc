@@ -11,6 +11,13 @@ HANDOFF.md
 .user.ini
 .htaccess
 .well-known/*
+# Secrets and credentials — never let a local .env or key reach a web root.
+.env*
+*.key
+*.pem
+id_rsa*
+*.p12
+
 # Tooling and logs
 node_modules/*
 *.log
