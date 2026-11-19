@@ -1,5 +1,5 @@
 # docker / cargo / maven / bundler
-# Onboarding rules: see "Dependency updates (Dependabot)" in ~/.config/opencode/AGENTS.md
+# Shared starter: ~/.config/opencode/templates/registry.yaml (templates/dependabot.yml entry)
 version: 2
 updates:
   - package-ecosystem: "npm"
