@@ -10,7 +10,8 @@ VitePress doc site served at `doc.horatio.cn` — the whole site is the root-lev
 | Local preview | `npm run dev` |
 | Build / verification | `npm run build` → `dist/`; CI check = `dist/index.html` exists |
 | Single test / lint | none — `npm run build` is the only gate |
-| `npm run count` | broken — `scripts/count.ts` does not exist |
+
+Do not run `npm run count` — its script (`scripts/count.ts`) does not exist; `npm run build` is the only gate.
 
 Before finishing: `npm run build` exits 0 and `dist/index.html` exists. On a dependency error run `npm install` first (local `node_modules`/lockfile can lag `package-lock.json`).
 
