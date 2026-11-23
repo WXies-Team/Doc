@@ -13,7 +13,7 @@ VitePress doc site served at `doc.horatio.cn` — the whole site is the root-lev
 
 Do not run `npm run count` — its script (`scripts/count.ts`) does not exist; `npm run build` is the only gate.
 
-Before finishing: `npm run build` exits 0 and `dist/index.html` exists. On a dependency error run `npm install` first (local `node_modules`/lockfile can lag `package-lock.json`).
+On a dependency error run `npm install` first (local `node_modules`/lockfile can lag `package-lock.json`) — the build gate itself is the Definition of done below.
 
 ## Context loading
 
@@ -41,6 +41,6 @@ Before finishing: `npm run build` exits 0 and `dist/index.html` exists. On a dep
 - Re-add a `search` config.
 - Add panel-managed files (`.user.ini`, `.htaccess`, `.well-known/`) to the repo — they are rsync-excluded.
 
-## Output
+## Definition of done
 
-Chinese, lead with the conclusion. Keep instruction files in English.
+`npm run build` exits 0 and `dist/index.html` exists; an added/removed page also updated the `sidebar` in `.vitepress/config.ts`; legal-text edits refreshed that page's `**生效日期：**`.
