@@ -67,4 +67,4 @@
 
 如果对本协议有任何疑问，请通过以下方式与我们联系：
 
-**联系邮箱**：[hs@horatio.cn](mailto:hs@horatio.cn)
+**联系邮箱**：[support@horatio.cn](mailto:support@horatio.cn)
