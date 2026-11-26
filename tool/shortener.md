@@ -4,17 +4,23 @@ outline: deep
 
 # 短链服务
 
-为 [tio.fyi](https://tio.fyi) 短链系统提供 JSON 接口：创建、查看、编辑、删除短链，并支持密钥管理。
+为 [tio.fyi](https://tio.fyi) 短链系统提供 REST 接口：创建、查看、编辑、删除短链，并支持密钥管理。
 
 ## 接口信息
 
 | 项目 | 说明 |
 | --- | --- |
-| 接口地址 | `https://tio.fyi/api.php` |
-| 请求方法 | `POST`（推荐，携带 JSON body）或 `GET`（只读操作） |
+| 接口地址 | `https://tio.fyi/api/v1` |
+| 请求方法 | `GET` / `POST` / `PATCH` / `DELETE`，见各接口 |
 | 返回格式 | `JSON`（UTF-8） |
 | 鉴权方式 | `Authorization: Bearer <API密钥>`，见下方「鉴权」 |
-| 调用对象 | 本人名下短链；创建与编辑仅限**链接（url）类型**，文本/Markdown 只能网页端维护 |
+| 调用对象 | 本人名下短链；通过密钥调用时，创建与编辑仅限**链接（url）类型**，文本/Markdown 只能网页端维护 |
+| 管理页面 | `https://tio.fyi/`（登录后管理短链） |
+
+:::warning 旧接口已下线
+`https://tio.fyi/api.php?action=...` 返回 HTTP `410`，请迁移到本页的 `/api/v1` 接口。
+短链本身不受影响：`https://tio.fyi/{code}` 仍然照常跳转。
+:::
 
 ## 鉴权
 
@@ -31,110 +37,129 @@ outline: deep
 | `?api_key=<密钥>` | 无法设置请求头的环境（如纯 GET 链接） |
 | JSON body 中的 `api_key` 字段 | 只想用一个 body 携带全部参数时 |
 
-会话登录态优先：浏览器带着登录 Cookie 请求接口时，按登录用户处理，不读密钥。
+会话登录态优先：浏览器带着登录 Cookie 请求接口时，按登录用户处理，不读密钥。会话态的写操作需要携带 `X-CSRF-Token`（来自管理页 `<meta name="csrf-token">`）；密钥调用不需要。
 
 > 网页登录（2026-11 起）为统一授权登录：跳转 auth.horatio.cn（OAuth2 授权码 + PKCE）完成
 > 登录后回到本页建立会话，本地不再保存密码；API 密钥的生成、携带与校验方式均不变。
 
-**获取密钥：**登录 [短链管理](https://tio.fyi/url.php) → 左侧「API 密钥」卡片 → 复制密钥。
+**获取密钥：**登录 [短链管理](https://tio.fyi/) → 左侧「API 密钥」卡片 → 复制密钥。
 **重置密钥：**同一卡片的「重置密钥」按钮（红色）。重置后旧密钥**立即失效**，需重新同步配置。
 
 :::warning 密钥安全
 密钥等同于你的账号凭据，请勿提交到公开仓库或写在前端代码中。
 :::
 
-:::tip 一句话速用
-唯一必填参数是 `url`（长链），其余全部可省略——省略 `code` 自动生成、省略 `wechat_allowed` 视为允许微信、省略 `expire_days` 视为永不过期、省略 `max_clicks` 视为无次数上限。
-:::
+## 短链对象
 
-## 调用参数
+所有返回短链的接口都使用同一形态：
 
-### create — 创建短链
+| 字段 | 类型 | 说明 |
+| --- | --- | --- |
+| `id` | int | 短链 ID（编辑、删除用） |
+| `code` | string | 短链代码，统一小写 |
+| `url` | string | 目标链接；文本/Markdown 类型时为内容本身 |
+| `type` | string | `url` / `text` / `markdown` |
+| `wechat_allowed` | int | `1` 允许微信内打开，`0` 禁止 |
+| `expires_at` | string\|null | 过期时间 `Y-m-d H:i:s`，`null` 永不过期 |
+| `max_clicks` | int\|null | 访问次数上限，`null` 不限 |
+| `clicks` | int | 已访问次数 |
+| `created_at` | string | 创建时间 |
+| `short_url` | string | 完整短链，如 `https://tio.fyi/Kzufb6` |
+
+## 接口
+
+### 创建短链
+
+`POST /api/v1/links`
 
 | 参数 | 类型 | 必填 | 默认值 | 说明 |
 | --- | --- | --- | --- | --- |
-| `action` | string | 是 | — | 固定 `create` |
-| `url` | string | 是 | — | 长链（目标地址）。含中文或敏感关键词时建议改用 `url_b64` |
+| `url` | string | 是 | — | 目标链接。含中文或敏感关键词时建议改用 `url_b64` |
 | `url_b64` | string | 否 | — | `url` 的 UTF-8 base64，与 `url` 二选一，优先使用 |
-| `code` | string | 否 | 自动生成 6 位 | 短链代码，`a-zA-Z0-9`，长度 1–32 |
+| `code` | string | 否 | 自动生成 6 位 | 短链代码，`a-zA-Z0-9`，长度 1–32，入库统一转小写 |
 | `wechat_allowed` | int | 否 | `1` | `1` 允许微信内打开，`0` 禁止 |
 | `expire_days` | int | 否 | `0` | 有效天数：`0` 永不过期 |
 | `max_clicks` | int | 否 | 不限 | 访问次数上限，`0` 或空视为不限 |
-| `overwrite` | int | 否 | **API: `1` / 网页: `0`** | 短链已存在且属于同一用户时是否覆盖 |
-| `type` | string | 否 | `url` | **仅支持 `url`**，传 `text`/`markdown` 会报错 |
+| `type` | string | 否 | `url` | **密钥调用仅支持 `url`**；`text` / `markdown` 只能网页端创建 |
 
-### 目标链接校验规则
+成功返回 `201 Created`、`Location: /api/v1/links/{id}` 与短链对象。自动生成代码命中冲突时会自动换码重试，不会覆盖任何已有短链。
 
-`url` / `url_b64` 解码后的内容需同时满足以下条件，否则返回 `请输入有效的链接地址`：
+### 查询列表
 
-- 长度 ≤ 4096 字节（`strlen` 按字节计），且不含换行符
-- 带协议头，形如 `scheme://...`：`http`/`https` 之外也允许 `clash://`、`tg://`、`bilibili://`、`weixin://` 等自定义应用协议
-- 禁止 `javascript:`、`vbscript:`、`data:` 等危险伪协议
-- 不能指向 `tio.fyi` 自身（防止短链指向短链造成自环）
-- 中文与复杂查询参数可正常传入；命中 WAF 误拦截时改用 `url_b64`
-
-### update — 编辑短链
+`GET /api/v1/links?page=1&per_page=20&search=xxx`
 
 | 参数 | 类型 | 必填 | 默认值 | 说明 |
 | --- | --- | --- | --- | --- |
-| `action` | string | 是 | — | 固定 `update` |
-| `id` | int | 是 | — | 短链 ID |
-| `code` | string | 是 | — | 短链代码 |
-| `url` | string | 是 | — | 目标地址（同 `url_b64` 规则） |
-| `wechat_allowed` | int | 否 | 不改动 | 省略则不改动 |
-| `expire_days` | int | 否 | 保持原值 | **省略 = 保持原过期时间**；`0` = 清除过期 |
-| `max_clicks` | int | 否 | 保持原上限 | **省略 = 保持原上限**；空/`0` = 取消上限 |
+| `page` | int | 否 | `1` | 页码 |
+| `per_page` | int | 否 | `20` | 每页条数，上限 `100` |
+| `search` | string | 否 | — | 按 `code` 或 `url` 模糊匹配 |
 
-:::tip 编辑限制
-接口不支持修改 `type`（与网页端一致），如需改为文本/Markdown 请重新创建。
-:::
+返回 `{ "data": [...], "page": 1, "per_page": 20, "total": 2, "pages": 1 }`，仅包含本人短链。
 
-### 其他操作
+### 查询单条
 
-| `action` | 方法 | 必填参数 | 说明 |
-| --- | --- | --- | --- |
-| `list` | `GET` | `search`、`page`（可选） | 分页 20 条/页，仅返回本人短链；按 `code` 或 `url` 模糊匹配，网页端创建的文本/Markdown 短链也会一并返回 |
-| `delete` | `POST` | `id` | 删除短链，成功返回 `{"success":true,"message":"删除成功"}` |
-| `update_wechat` | `POST` | `id`、`wechat_allowed` | 单独切换微信可开状态，返回 `{"success":true,"wechat_allowed":0\|1}` |
-| `reset_api_key` | `POST` | — | 重置密钥并返回新密钥 `{"success":true,"api_key":"..."}`；**仅网页登录态可用**，防止密钥被盗后远程轮换锁死账号 |
+`GET /api/v1/links/{id}` → 短链对象。
 
-:::tip 有效期与次数上限的生效表现
-过期或访问次数达上限的短链，访问时返回 HTTP `410`「链接已过期」，不再跳转。
-:::
+### 编辑短链
 
-## 覆盖规则
+`PATCH /api/v1/links/{id}`
 
-短链代码全站唯一，创建时按归属与 `overwrite` 决定行为：
+只传需要修改的字段，未传的保持不变：
 
-| 短链归属 | `overwrite` | 结果 |
+| 参数 | 类型 | 说明 |
 | --- | --- | --- |
-| 不存在 | — | 正常创建，`code` 自动生成或使用传入值 |
-| **他人**（或无归属） | 任意 | ❌ `该短链代码已被其他用户占用` |
-| **本人** | `1` | ✅ **删旧插新**：删除原记录并重新插入，`id` 变更、点击数与创建时间重置，返回 `overwritten: true` |
-| **本人** | `0` | 返回 `needs_overwrite: true`，由调用方确认后带 `overwrite: 1` 重发 |
+| `code` | string | 新短链代码（同样受格式、保留字、占用校验） |
+| `url` / `url_b64` | string | 新目标地址（同创建规则） |
+| `wechat_allowed` | int | 仅链接类型有效；文本/Markdown 强制为 `1` |
+| `expire_days` | int | `0` = 清除过期；不传 = 保持原值 |
+| `max_clicks` | int | 空/`0` = 取消上限；不传 = 保持原值 |
 
-:::tip 网页与接口的差别
-网页端默认 `overwrite=0`（弹窗让你确认后再覆盖），接口默认 `overwrite=1`（直接覆盖，不打断自动化流程）。显式传递 `overwrite` 时以传入值为准。
-:::
+`type` 不可修改，如需改为文本/Markdown 请重新创建。
+
+### 删除短链
+
+`DELETE /api/v1/links/{id}` → `204 No Content`。删除后该短链立即失效，代码可被重新创建。
+
+### 重置 API 密钥
+
+`POST /api/v1/api-key/reset` → `{ "api_key": "..." }`。**仅网页登录态可用**，防止密钥被盗后远程轮换锁死账号。
+
+## 短链代码规则
+
+- 只允许 `a-z` / `A-Z` / `0-9`，长度 1–32；入库与返回统一小写（历史大写代码仍可访问，数据库排序规则不区分大小写）。
+- **全站唯一，先到先得**：已被占用的代码（包括自己创建的）在创建时返回 `409 code_taken`。本服务**不提供覆盖**；要换目标链接请对原 ID 发 `PATCH`，要换代码也通过 `PATCH`。
+- **保留字**：`api`、`login`、`logout`、`oauth`、`resource`、`assets`、`admin`、`app`、`config`、`script`、`public`、`favicon`、`robots` 不可使用，返回 `409 code_reserved`。
+
+## 目标链接校验规则
+
+`url` / `url_b64` 解码后的内容需同时满足以下条件，否则返回 `422 invalid_url`：
+
+- 长度 ≤ 4096 字节，且不含换行符
+- 带协议头，形如 `scheme://...`：`http`/`https` 之外也允许 `clash://`、`tg://`、`bilibili://`、`weixin://` 等自定义应用协议
+- 禁止 `javascript:`、`vbscript:`、`data:` 等危险伪协议
+- 不能指向本站任意域名（`tio.fyi`、`www.tio.fyi`、`url.horatio.cn`、`url.wxies.cn`），避免自环
+- 中文与复杂查询参数可正常传入；命中 WAF 误拦截时改用 `url_b64`
+
+## 跳转行为
+
+- 正常跳转：`302 Found`，不强缓存，编辑后立即生效。
+- 过期或次数达上限：返回 `410 Gone`「链接已过期」。次数上限在服务端原子扣减，不会超发。
+- 禁止微信且来自微信内置浏览器：返回微信拦截页，不跳转。
+- 文本/Markdown：直接返回内容页（同样计入点击数、受过期与次数上限约束）。
 
 ## 调用示例
 
 ### 创建短链（不指定代码）
 
-**请求：**
-
 ```bash
-curl -X POST 'https://tio.fyi/api.php?action=create' \
+curl -X POST 'https://tio.fyi/api/v1/links' \
   -H 'Content-Type: application/json' \
   -H 'Authorization: Bearer 你的API密钥' \
   -d '{"url":"https://example.com/hello"}'
 ```
 
-**返回示例：**
-
 ```json
 {
-  "success": true,
   "id": 12,
   "code": "Kzufb6",
   "url": "https://example.com/hello",
@@ -142,17 +167,16 @@ curl -X POST 'https://tio.fyi/api.php?action=create' \
   "wechat_allowed": 1,
   "expires_at": null,
   "max_clicks": null,
-  "overwritten": false,
+  "clicks": 0,
+  "created_at": "2026-11-26 17:30:00",
   "short_url": "https://tio.fyi/Kzufb6"
 }
 ```
 
-### 指定短链代码 + 完整参数
-
-**请求：**
+### 指定代码 + 完整参数
 
 ```bash
-curl -X POST 'https://tio.fyi/api.php?action=create' \
+curl -X POST 'https://tio.fyi/api/v1/links' \
   -H 'Content-Type: application/json' \
   -H 'X-API-Key: 你的API密钥' \
   -d '{
@@ -166,8 +190,6 @@ curl -X POST 'https://tio.fyi/api.php?action=create' \
 
 ### 使用 url_b64 避免误拦截
 
-**请求：**
-
 ```python
 import base64, json, urllib.request
 
@@ -177,127 +199,49 @@ body = {
     "code": "cnlink",
 }
 req = urllib.request.Request(
-    "https://tio.fyi/api.php?action=create",
+    "https://tio.fyi/api/v1/links",
     data=json.dumps(body).encode(),
     headers={"Content-Type": "application/json", "Authorization": f"Bearer {key}"},
 )
 print(json.load(urllib.request.urlopen(req)))
 ```
 
-### 覆盖已存在的同名短链
-
-**请求：**
+### 查询、编辑、删除
 
 ```bash
-# 第一次：code 已存在且属于你，返回 needs_overwrite
-curl -X POST 'https://tio.fyi/api.php?action=create' \
-  -H 'Content-Type: application/json' \
-  -H 'Authorization: Bearer 你的API密钥' \
-  -d '{"url":"https://example.com/v2","code":"sale2026"}'
-
-# 返回
-# {"success":false,"needs_overwrite":true,"message":"该短链代码已存在，是否覆盖原内容？"}
-
-# 第二次：带 overwrite=1 确认覆盖
-curl -X POST 'https://tio.fyi/api.php?action=create' \
-  -H 'Content-Type: application/json' \
-  -H 'Authorization: Bearer 你的API密钥' \
-  -d '{"url":"https://example.com/v2","code":"sale2026","overwrite":1}'
-```
-
-### 查询短链列表
-
-**请求：**
-
-```bash
-curl 'https://tio.fyi/api.php?action=list&search=sale&page=1' \
+curl 'https://tio.fyi/api/v1/links?search=sale&page=1' \
   -H 'Authorization: Bearer 你的API密钥'
-```
 
-**返回示例：**
-
-```json
-{
-  "success": true,
-  "data": [
-    {
-      "id": 13,
-      "code": "sale2026",
-      "url": "https://example.com/v2",
-      "type": "url",
-      "clicks": 4,
-      "wechat_allowed": 1,
-      "expires_at": "2026-10-10 00:00:00",
-      "max_clicks": 100
-    }
-  ],
-  "total": 1,
-  "page": 1,
-  "pages": 1
-}
-```
-
-### 编辑短链
-
-**请求：**
-
-```bash
-# 传 expire_days=0 清除过期；不传 expire_days 则保持原值
-curl -X POST 'https://tio.fyi/api.php?action=update' \
+curl -X PATCH 'https://tio.fyi/api/v1/links/13' \
   -H 'Content-Type: application/json' \
   -H 'Authorization: Bearer 你的API密钥' \
-  -d '{"id":13,"code":"sale2026","url":"https://example.com/v3","expire_days":0,"max_clicks":""}'
-```
+  -d '{"url":"https://example.com/v3","expire_days":0,"max_clicks":""}'
 
-**返回示例：**
-
-```json
-{
-  "success": true,
-  "id": 13,
-  "code": "sale2026",
-  "url": "https://example.com/v3",
-  "short_url": "https://tio.fyi/sale2026"
-}
-```
-
-### 删除短链 / 切换微信
-
-**请求：**
-
-```bash
-curl -X POST 'https://tio.fyi/api.php?action=delete' \
-  -H 'Content-Type: application/json' \
-  -H 'Authorization: Bearer 你的API密钥' \
-  -d '{"id":13}'
-
-curl -X POST 'https://tio.fyi/api.php?action=update_wechat' \
-  -H 'Content-Type: application/json' \
-  -H 'Authorization: Bearer 你的API密钥' \
-  -d '{"id":13,"wechat_allowed":0}'
+curl -X DELETE 'https://tio.fyi/api/v1/links/13' \
+  -H 'Authorization: Bearer 你的API密钥'
 ```
 
 ## 错误处理
 
-所有响应均含 `success` 字段，失败时附 `message`；覆盖确认场景额外返回 `needs_overwrite`。**业务错误统一返回 HTTP `200` + `"success": false`，以响应体中的 `success` 判断成败。**
+失败时返回非 2xx 状态码与统一错误体：
 
-| HTTP 状态码 | message | 说明 |
+```json
+{ "error": { "code": "code_taken", "message": "该短链代码已被占用" } }
+```
+
+| HTTP 状态码 | `error.code` | 说明 |
 | --- | --- | --- |
-| `200` | `未授权：请先登录，或提供有效的 API 密钥` | 密钥缺失、错误或过期 |
-| `200` | `API 仅支持链接类型，文本与 Markdown 请在网页端创建` | 通过接口创建非链接类型 |
-| `200` | `API 仅支持链接类型，请在网页端编辑该内容` | 通过接口编辑文本/Markdown 短链 |
-| `200` | `请输入内容` | `url` / `url_b64` 为空 |
-| `200` | `请输入有效的链接地址` | 目标地址不符合链接格式 |
-| `200` | `短链代码只能包含字母和数字，长度 1-32 位` | `code` 格式非法 |
-| `200` | `该短链代码已被其他用户占用` | 短链代码属于他人 |
-| `200` | `该短链代码已存在，是否覆盖原内容？` | 返回 `needs_overwrite:true`，需确认后重发 |
-| `200` | `该短链代码已被占用` | 编辑时改为已被占用的代码 |
-| `200` | `短链不存在` / `无效的ID` | `id` 无权或不存在 |
-| `200` | `该操作需在登录后的网页中执行` | 用密钥调用 `reset_api_key` |
-| `200` | `无效的操作请求` | `action` 不受支持 |
-| `200` | `服务器错误，请稍后再试` | 数据库异常 |
-| `403` | — | 命中站点防火墙（WAF），返回 HTML 拦截页；改用 `url_b64` 或调整目标地址重试 |
-| `410` | — | 短链已过期或访问次数达上限，不再跳转 |
+| `400` | `empty_content` | `url` / `url_b64` 为空 |
+| `401` | `unauthorized` | 密钥缺失、错误或过期 |
+| `403` | `csrf_invalid` / `session_required` | 会话写操作缺少 CSRF；密钥调用了仅会话接口 |
+| `404` | `not_found` | 短链不存在或不属于当前用户（不区分两者，避免枚举） |
+| `405` | `method_not_allowed` | 路径存在但不支持该请求方法 |
+| `409` | `code_taken` / `code_reserved` | 代码已被占用 / 命中保留字 |
+| `410` | `api_moved` | 调用了已下线的旧 `api.php` |
+| `422` | `invalid_url` / `invalid_code` / `type_not_supported` | 目标链接非法 / 代码格式非法 / 密钥调用非链接类型 |
+| `500` | `server_error` | 数据库或服务器异常 |
+
+WAF 拦截会直接返回 HTML 拦截页（`403`），不会进入应用；改用 `url_b64` 或调整目标地址后重试。
 
 :::tip 问题反馈
 遇到问题请前往 [GitHub Issues](https://github.com/WXies-Team/Doc/issues) 提问
