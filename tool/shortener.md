@@ -96,6 +96,17 @@ outline: deep
 
 返回 `{ "data": [...], "page": 1, "per_page": 20, "total": 2, "pages": 1 }`，仅包含本人短链。
 
+### 统计总览
+
+`GET /api/v1/stats` 返回本人短链的汇总数据：
+
+| 字段 | 类型 | 说明 |
+| --- | --- | --- |
+| `links` | int | 短链总数 |
+| `clicks` | int | 累计点击 |
+| `new7d` | int | 近 7 天新增 |
+| `expiring7d` | int | 未来 7 天内到期（未过期） |
+
 ### 查询单条
 
 `GET /api/v1/links/{id}` → 短链对象。
