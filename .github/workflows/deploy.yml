@@ -25,7 +25,6 @@ jobs:
       # fetch-depth: 0 拉全量历史：VitePress 的「最后更新于」按每个文件跑
       # git log -1 取时间，默认浅克隆只剩 1 个 commit，全站时间会变成最后一次提交
       - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
-      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
         with:
           persist-credentials: false
           fetch-depth: 0
